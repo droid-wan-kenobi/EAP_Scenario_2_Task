@@ -1,48 +1,61 @@
-import UIKit
+import SwiftUI
 
-class ViewController: UIViewController {
+struct Fruit: Identifiable {
+    let id = UUID()
+    let name: String
+    let fullName: String
+}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
- // Set background color
+struct ContentView: View {
+    let fruits = [
+        Fruit(name: "Apple", fullName: "Malus domestica"),
+        Fruit(name: "Banana", fullName: "Musa acuminata"),
+        Fruit(name: "Orange", fullName: "Citrus × sinensis"),
+        Fruit(name: "Grapes", fullName: "Vitis vinifera"),
+        Fruit(name: "Strawberry", fullName: "Fragaria × ananassa"),
+        Fruit(name: "Watermelon", fullName: "Citrullus lanatus"),
+        Fruit(name: "Pineapple", fullName: "Ananas comosus"),
+        Fruit(name: "Mango", fullName: "Mangifera indica")
+    ]
 
-        // Configure navigation bar
-        navigationItem.title = "App Title"
+    @State private var cartCount = 0
 
-        // Create buttons
-        let button1 = UIButton(type: .system)
-        button1.setTitle("Button 1", for: .normal)
-        button1.addTarget(self, action: #selector(button1Tapped), for: .touchUpInside)
+    var body: some View {
+        NavigationView {
+            VStack {
+                HStack {
+                    Text("Cart has \(cartCount) items")
+                    Spacer()
+                    Button(action: {
+                        // Add expand functionality here
+                    }) {
+                        Text("expand")
+                            .foregroundColor(.blue)
+                    }
+                }
+                .padding()
 
-        let button2 = UIButton(type: .system)
-        button2.setTitle("Button 2", for: .normal)
-        button2.addTarget(self, action: #selector(button2Tapped), for: .touchUpInside)
-
-        // Add buttons to a stack view for easy layout
-        let stackView = UIStackView(arrangedSubviews: [button1, button2])
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
-
-
-        // Set constraints for the stack view
-        NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-
-        ])
+                List(fruits) { fruit in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(fruit.name)
+                                .font(.headline)
+                            Text(fruit.fullName)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+                .listStyle(PlainListStyle())
+            }
+            .navigationTitle("Fruitties")
+        }
     }
+}
 
-    // Button actions
-    @objc func button1Tapped() {
-        // Handle button 1 tap
-        print("Button 1 tapped")
-    }
-
-    @objc func button2Tapped() {
-        // Handle button 2 tap
-        print("Button 2 tapped")
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
